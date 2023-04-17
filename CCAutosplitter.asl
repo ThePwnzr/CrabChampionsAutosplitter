@@ -1,17 +1,17 @@
 /*
 Created by Mitz, find me on the official Discord!
-v0.12
+v0.121
 for version Early Access 1772 - Update 3
 */
 
 state("CrabChampions-Win64-Shipping")
 {
 	//level and gamestate are actually both stored as 4 bytes, in case you want to search in CE easier.
-	byte level : 0x04299B00, 0x148, 0x98, 0xA8, 0xB10, 0x540, 0x80, 0x2A8;
-	byte gamestate : 0x04299B00, 0x148, 0x98, 0xA8, 0xB10, 0x540, 0x80, 0x278;
+	byte level : 0x04299B00, 0x120, 0x2A8;
+	byte gamestate : 0x04299B00, 0x120, 0x278;
 	
 	//this is only a readout of the current health, not the actual health
-	float health : 0x04299B00, 0x38, 0x140, 0x118, 0x280, 0x238, 0x0, 0x38C;
+	float health : 0x04299B00, 0x30, 0x228, 0x38C;
 }
 
 init{
