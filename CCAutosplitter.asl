@@ -1,6 +1,6 @@
 /*
 Created by Mitz, find me on the official Discord!
-v0.121
+v0.122
 for version Early Access 1772 - Update 3
 */
 
@@ -11,7 +11,7 @@ state("CrabChampions-Win64-Shipping")
 	byte gamestate : 0x04299B00, 0x120, 0x278;
 	
 	//this is only a readout of the current health, not the actual health
-	float health : 0x04299B00, 0x30, 0x228, 0x38C;
+	float health : 0x04282120, 0x30, 0x228, 0x38C;
 }
 
 init{
@@ -28,6 +28,15 @@ startup{
 }
 
 update{
+	/*
+	if (current.level != old.level & old.level > 0) {
+		print("[CrabAutoSplit] UPDATE");
+		print("[CrabAutoSplit] " + current.level);
+		print("[CrabAutoSplit] " +current.gamestate);
+		print("[CrabAutoSplit] " +current.health);
+		return true;
+	}
+	*/
 	return true;
 }
 
@@ -44,7 +53,7 @@ gamestate 7: loading (crab splash screen)
 start{
 	//level 0 is lobby
 	if (current.level == 0 & current.gamestate == 2) {
-		print("[CrabAutoSplit] START");
+		print("[CrabAutoSplit] RUN START");
 		return true;
 	};
 }
@@ -69,6 +78,7 @@ split{
 					return true;
 				};
 			};
+
 			if (settings["split10"] == true) {
 				print("[CrabAutoSplit] 10 SPLIT ENABLED");
 				if ((current.level - 1) % 10 == 0) {
@@ -76,6 +86,7 @@ split{
 					return true;
 				};
 			};
+
 			if (settings["split5"] == true) {  
 				print("[CrabAutoSplit] 5 SPLIT ENABLED");
 				if ((current.level - 1) % 5 == 0) {
@@ -94,10 +105,15 @@ split{
 			print("[CrabAutoSplit] NO SPLIT DONE BY US");
 			return false;
 	};
-	//TODO: Make sure this doesn't split if you die at level 30. Currently the game seems to set your health to 1 even when you're dead? This could potentially trigger splits at death instead of only victory 
-	if (current.gamestate == 6 & current.level%30 == 0 & current.health > 1) {
-		print("[CrabAutoSplit] VICTORY SCREEN");
-		return true;
+
+	//TODO: Make sure this doesn't split if you die at the boss level. 
+	//Currently the game seems to set your health to 1 even when you're dead? 
+	//This could potentially trigger splits at death instead of only victory 
+	if (current.gamestate == 6 && current.health > 1) {
+		if (current.level == 30 | 60 | 90 | 120) {
+			print("[CrabAutoSplit] VICTORY SCREEN");
+			return true;
+		};
 	};
 }
 
