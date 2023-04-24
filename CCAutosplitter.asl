@@ -1,6 +1,6 @@
 /*
-Created by Mitz, find me on the official Discord!
-v0.122
+Created by Mitz, find me on the official Crab Champions Speedrunning Discord!
+v0.123
 for version Early Access 1772 - Update 3
 */
 
@@ -20,7 +20,9 @@ init{
 
 startup{
 	print("[CrabAutoSplit] STARTUP");
-	settings.Add("comment", true, "Only use one at a time!");
+	settings.Add("reset", true, "Reset splits on returning to Lobby");
+
+	settings.Add("comment", true, "Only use one level split at a time!");
 	settings.Add("split1", false, "Split Every Level", "comment");
 	settings.Add("split5", true, "Split Every 5 Levels (Default)", "comment");
 	settings.Add("split10", false, "Split Every 10 Levels", "comment");
@@ -106,9 +108,11 @@ split{
 			return false;
 	};
 
-	//TODO: Make sure this doesn't split if you die at the boss level. 
-	//Currently the game seems to set your health to 1 even when you're dead? 
-	//This could potentially trigger splits at death instead of only victory 
+	/*
+	TODO: Make sure this doesn't split if you die at the boss level. 
+	Currently the game seems to set your health to 1 even when you're dead? 
+	This could potentially trigger splits at death instead of only victory 
+	*/
 	if (current.gamestate == 6 && current.health > 1) {
 		if (current.level == 30 | 60 | 90 | 120) {
 			print("[CrabAutoSplit] VICTORY SCREEN");
@@ -118,8 +122,11 @@ split{
 }
 
 reset{
-	if (current.gamestate == 7) {
-	print("[CrabAutoSplit] SPLITS RESET");
-	return true;
+	//New setting for loading screen reset
+	if (settings["reset"] == true) { 
+		if (current.gamestate == 7) {
+		print("[CrabAutoSplit] SPLITS RESET");
+		return true;
+		};
 	};
 }
