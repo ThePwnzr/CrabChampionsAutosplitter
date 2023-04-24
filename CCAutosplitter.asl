@@ -20,7 +20,6 @@ init{
 
 startup{
 	print("[CrabAutoSplit] STARTUP");
-	settings.Add("reset", true, "Reset splits on returning to Lobby");
 
 	settings.Add("comment", true, "Only use one level split at a time!");
 	settings.Add("split1", false, "Split Every Level", "comment");
@@ -31,15 +30,13 @@ startup{
 
 update{
 	/*
-	if (current.level != old.level & old.level > 0) {
+	if (old.level != current.level && old.level > 0) {
 		print("[CrabAutoSplit] UPDATE");
 		print("[CrabAutoSplit] " + current.level);
 		print("[CrabAutoSplit] " +current.gamestate);
 		print("[CrabAutoSplit] " +current.health);
-		return true;
 	}
 	*/
-	return true;
 }
 
 /*
@@ -54,26 +51,21 @@ gamestate 7: loading (crab splash screen)
 
 start{
 	//level 0 is lobby
-	if (current.level == 0 && current.gamestate == 2) {
+	if (old.gamestate == 1 && current.gamestate == 2 && current.level == 0) {
 		print("[CrabAutoSplit] RUN START");
 		return true;
 	};
 }
 
 isLoading{
-	if(current.gamestate == 2){
-		return true;
-	};
-	if(current.gamestate != 2){
-		return false;
-	};
+	return current.gamestate == 2;
 }
 
 split{
 	//detect level change (0 check is to prevent it from spamming splits when starting a new run)
-	if (current.level != old.level && old.level > 0) {
+	if (old.level != current.level && old.level > 0) {
 			print("[CrabAutoSplit] LEVEL CHANGED!");
-			if (settings["split15"] == true) {
+			if (settings["split15"]) {
 				print("[CrabAutoSplit] 15 SPLIT ENABLED");
 				if ((current.level - 1) % 15 == 0) {
 					print("[CrabAutoSplit] SPLIT DONE!");
@@ -81,7 +73,7 @@ split{
 				};
 			};
 
-			if (settings["split10"] == true) {
+			if (settings["split10"]) {
 				print("[CrabAutoSplit] 10 SPLIT ENABLED");
 				if ((current.level - 1) % 10 == 0) {
 					print("[CrabAutoSplit] SPLIT DONE!");
@@ -89,7 +81,7 @@ split{
 				};
 			};
 
-			if (settings["split5"] == true) {
+			if (settings["split5"]) {
 				print("[CrabAutoSplit] 5 SPLIT ENABLED");
 				if ((current.level - 1) % 5 == 0) {
 					print("[CrabAutoSplit] SPLIT DONE!");
@@ -97,7 +89,7 @@ split{
 				};
 			};
 
-			if (settings["split1"] == true) {
+			if (settings["split1"]) {
 				print("[CrabAutoSplit] SPLIT AT 1");
 				print("[CrabAutoSplit] SPLIT DONE!");
 				return true;
@@ -105,7 +97,6 @@ split{
 
 			//in case no settings are picked, for some reason
 			print("[CrabAutoSplit] NO SPLIT DONE BY US");
-			return false;
 	};
 
 	/*
@@ -123,7 +114,7 @@ split{
 
 reset{
 	//New setting for loading screen reset
-	if (settings["reset"] == true) {
+	if (settings["reset"]) {
 		if (current.gamestate == 7) {
 		print("[CrabAutoSplit] SPLITS RESET");
 		return true;
