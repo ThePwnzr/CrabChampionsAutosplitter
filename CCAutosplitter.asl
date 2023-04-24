@@ -9,7 +9,7 @@ state("CrabChampions-Win64-Shipping")
 	//level and gamestate are actually both stored as 4 bytes, in case you want to search in CE easier.
 	byte level : 0x04299B00, 0x120, 0x2A8;
 	byte gamestate : 0x04299B00, 0x120, 0x278;
-	
+
 	//this is only a readout of the current health, not the actual health
 	float health : 0x04282120, 0x30, 0x228, 0x38C;
 }
@@ -54,7 +54,7 @@ gamestate 7: loading (crab splash screen)
 
 start{
 	//level 0 is lobby
-	if (current.level == 0 & current.gamestate == 2) {
+	if (current.level == 0 && current.gamestate == 2) {
 		print("[CrabAutoSplit] RUN START");
 		return true;
 	};
@@ -71,9 +71,9 @@ isLoading{
 
 split{
 	//detect level change (0 check is to prevent it from spamming splits when starting a new run)
-	if (current.level != old.level & old.level > 0) {
+	if (current.level != old.level && old.level > 0) {
 			print("[CrabAutoSplit] LEVEL CHANGED!");
-			if (settings["split15"] == true) {  
+			if (settings["split15"] == true) {
 				print("[CrabAutoSplit] 15 SPLIT ENABLED");
 				if ((current.level - 1) % 15 == 0) {
 					print("[CrabAutoSplit] SPLIT DONE!");
@@ -89,32 +89,32 @@ split{
 				};
 			};
 
-			if (settings["split5"] == true) {  
+			if (settings["split5"] == true) {
 				print("[CrabAutoSplit] 5 SPLIT ENABLED");
 				if ((current.level - 1) % 5 == 0) {
 					print("[CrabAutoSplit] SPLIT DONE!");
 					return true;
 				};
 			};
-			
-			if (settings["split1"] == true) {  
+
+			if (settings["split1"] == true) {
 				print("[CrabAutoSplit] SPLIT AT 1");
 				print("[CrabAutoSplit] SPLIT DONE!");
 				return true;
 			};
-			
+
 			//in case no settings are picked, for some reason
 			print("[CrabAutoSplit] NO SPLIT DONE BY US");
 			return false;
 	};
 
 	/*
-	TODO: Make sure this doesn't split if you die at the boss level. 
-	Currently the game seems to set your health to 1 even when you're dead? 
-	This could potentially trigger splits at death instead of only victory 
+	TODO: Make sure this doesn't split if you die at the boss level.
+	Currently the game seems to set your health to 1 even when you're dead?
+	This could potentially trigger splits at death instead of only victory
 	*/
 	if (current.gamestate == 6 && current.health > 1) {
-		if (current.level == 30 | 60 | 90 | 120) {
+		if (current.level == 30 || current.level == 60 || current.level 90 || current.level == 120) {
 			print("[CrabAutoSplit] VICTORY SCREEN");
 			return true;
 		};
@@ -123,7 +123,7 @@ split{
 
 reset{
 	//New setting for loading screen reset
-	if (settings["reset"] == true) { 
+	if (settings["reset"] == true) {
 		if (current.gamestate == 7) {
 		print("[CrabAutoSplit] SPLITS RESET");
 		return true;
