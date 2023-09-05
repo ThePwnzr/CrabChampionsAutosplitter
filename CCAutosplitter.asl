@@ -18,7 +18,7 @@ startup {
 		settings.Add("split5", true, "Every 5 Levels", "splits");
 		settings.Add("split10", false, "Every 10 Levels", "splits");
 		settings.Add("split15", false, "Every 15 Levels", "splits");
-	settings.Add("splitboss", false, "Split bosses separately from the level (i.e: 5, 9, boss, 15... instead of: 5, 10, 15...)");
+	settings.Add("splitboss", false, "Split bosses separately (i.e: 5, 9, boss, 15... instead of: 5, 10, 15...)");
 }
 
 start {
