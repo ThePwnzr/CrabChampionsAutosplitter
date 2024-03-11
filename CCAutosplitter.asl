@@ -41,7 +41,6 @@ split {
 				// detect level change (check against old.level 0 to avoid splitting at start)
 				if (old.level != current.level && old.level > 0) {
 				uint lvl = current.level - 1;
-				print("Current health is " + current.health);
 				return settings["split1"]
 					|| settings["split4"] && lvl % 4 == 0
 					|| settings["split8"] && lvl % 8 == 0
@@ -71,7 +70,6 @@ split {
 	// Currently the game seems to set your health to 1 even when you're dead.
 	// This could potentially trigger splits incorrectly, but has yet to be reported...
 	if (old.gamestate != 6 && current.gamestate == 6 && current.health > 1) {
-		print("SPLIT - GAME WON!");
 		return current.level == 32
 			|| current.level == 64
 			|| current.level == 96
