@@ -6,10 +6,10 @@ state("CrabChampions-Win64-Shipping") {
 	// 5: activated victory crown
 	// 6: victory screen, death screen
 	// 7: loading (crab splash screen)
-	uint  gamestate : 0x043C7BC8, 0x120, 0x278;
+	uint  gamestate : 0x043C8B88, 0x120, 0x278;
 	
-	uint  level     : 0x043C7BC8, 0x120, 0x2BC;
-	float health    : 0x043B0180, 0x30, 0x228, 0x38C; // read-out of the current health, not the actual health
+	uint  level     : 0x043C8B88, 0x120, 0x2BC;
+	float health    : 0x043B1140, 0x30, 0x228, 0x38C; // read-out of the current health, not the actual health
 }
 
 startup {
