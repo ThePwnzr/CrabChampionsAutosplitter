@@ -6,19 +6,19 @@ state("CrabChampions-Win64-Shipping") {
 	// 5: activated victory crown
 	// 6: victory screen, death screen
 	// 7: loading (crab splash screen)
-	uint  gamestate : 0x043C8B88, 0x120, 0x278;
+	uint  gamestate : 0x043D8FB8, 0x120, 0x278;
 	
-	uint  level     : 0x043C8B88, 0x120, 0x2BC;
-	float health    : 0x043B1140, 0x30, 0x228, 0x38C; // read-out of the current health, not the actual health
+	uint  level     : 0x043D8FB8, 0x120, 0x2BC;
+	float health    : 0x043C1570, 0x30, 0x228, 0x38C; // read-out of the current health, not the actual health
 }
 
 startup {
 	settings.Add("splits", true, "Split on level completion (only check one):");
 		settings.Add("split1", false, "Every Level", "splits");
-		settings.Add("split4", true, "Every 4 Levels", "splits");
-		settings.Add("split8", false, "Every 8 Levels", "splits");
-		settings.Add("split16", false, "Every 16 Levels", "splits");
-	settings.Add("splitboss", false, "Split bosses separately (i.e: 4, 7, boss, 9... instead of: 4, 8, 12...)");
+		//settings.Add("split4", true, "Every 4 Levels", "splits");
+		settings.Add("split7", false, "Every 7 Levels", "splits");
+		settings.Add("split14", false, "Every 14 Levels", "splits");
+	settings.Add("splitboss", false, "Split bosses separately (i.e: 6, boss, 8... instead of: 7, 14, 21...)");
 }
 
 start {
@@ -32,7 +32,7 @@ split {
 		case true: //boss setting is ON
 
 			//detect if we went to the boss level (check against old.level 0 to avoid splitting at start)
-			if (old.level != current.level && old.level > 0 && current.level % 8 == 0) {
+			if (old.level != current.level && old.level > 0 && current.level % 7 == 0) {
 				return true;
 			}
 
@@ -42,9 +42,9 @@ split {
 				if (old.level != current.level && old.level > 0) {
 				uint lvl = current.level - 1;
 				return settings["split1"]
-					|| settings["split4"] && lvl % 4 == 0
-					|| settings["split8"] && lvl % 8 == 0
-					|| settings["split16"] && lvl % 16 == 0;
+					//|| settings["split4"] && lvl % 4 == 0
+					|| settings["split7"] && lvl % 7 == 0
+					|| settings["split14"] && lvl % 14 == 0;
 				}
 			}
 			break;
@@ -55,9 +55,9 @@ split {
 			if (old.level != current.level && old.level > 0) {
 			uint lvl = current.level - 1;
 			return settings["split1"]
-				|| settings["split4"] && lvl % 4 == 0
-				|| settings["split8"] && lvl % 8 == 0
-				|| settings["split16"] && lvl % 16 == 0;
+				//|| settings["split4"] && lvl % 4 == 0
+				|| settings["split7"] && lvl % 7 == 0
+				|| settings["split14"] && lvl % 14 == 0;
 			}
 			break;
 
@@ -66,14 +66,15 @@ split {
 			break;
 	};
 
+	// Split for winning the game!
 	// TODO: Make sure this doesn't split if you die at the boss level.
 	// Currently the game seems to set your health to 1 even when you're dead.
 	// This could potentially trigger splits incorrectly, but has yet to be reported...
 	if (old.gamestate != 6 && current.gamestate == 6 && current.health > 1) {
-		return current.level == 32
-			|| current.level == 64
-			|| current.level == 96
-			|| current.level == 128;
+		return current.level == 28
+			|| current.level == 56
+			|| current.level == 84
+			|| current.level == 112;
 	}
 }
 
